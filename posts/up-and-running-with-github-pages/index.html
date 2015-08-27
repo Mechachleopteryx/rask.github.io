@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Up and running with GitHub Pages</title>
+    <meta name="description" content="This site is hosted at GitHub Pages, which is a simple solution for hosting static websites. Static websites are exactly what you think they are: static HTML...">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="https://rask.github.io/posts/up-and-running-with-github-pages">
+    <link rel="alternate" type="application/rss+xml" title="rask.github.io" href="https://rask.github.io/feed.xml" />
+</head>
+
+
+<body class="single up-and-running-with-github-pages">
+
+    
+
+    <header id="header" class="container">
+        <div class="inbox">
+
+            <p class="logo"><a href="/"><img src="/img/logo.png" width="40" height="40" alt="rask.github.io"> rask.github.io</a></p>
+
+            <nav id="navigation">
+
+                <ul>
+                    <li class="home"><a href="/">Home</a></li>
+                    <li class="about"><a href="/about">About</a></li>
+                </ul>
+
+            </nav> <!-- /#navigation -->
+
+        </div>
+    </header> <!-- /#header -->
+
+
+    <main id="main" class="container">
+        <div class="inbox">
+
+            <h1>Up and running with GitHub Pages</h1>
+
+            <p class="meta">
+                Posted on 27 August, 2015 &mdash; <a href="#disqus_thread">Comments</a>
+            </p>
+
+            <article class="single">
+                <p>This site is hosted at <a href="https://pages.github.com/">GitHub Pages</a>, which is a simple solution for hosting static websites. Static websites are exactly what you think they are: static HTML, CSS, JavaScript and image files only.</p>
+
+<!--more-->
+
+<p>You can generate static sites using tools like Jekyll, site scrapers and so on, but you can also create sites fully by hand. Remember uploading your first HTML site using FTP? Hosting them works basically a bit like that.</p>
+
+<h2 id="how-github-pages-work">How GitHub Pages work</h2>
+
+<p>There are two kinds of GitHub Pages available: <em>user/organization pages</em> and <em>project pages</em><sup id="fnref:ghpt"><a href="#fn:ghpt" class="footnote">1</a></sup>.</p>
+
+<p>User and organization pages live on addresses like this site has: <code>user.github.io</code>. Project sites live as subfolders for users and organizations, e.g. <code>user.github.io/project</code>.</p>
+
+<p>Creating a user site is simple: create a new repository using the domain name as the repository name. The repository name for this site is <code>rask.github.io</code> and it lives at <code>github.com:rask/rask.github.io.git</code>.</p>
+
+<p>Project sites require a bit more fiddling, but once you’ve done it a few times it should make perfect sense. Project sites work exactly like user sites, but the site contents live inside the same GitHub repository as the project itself. The key is having a branch within the project called <code>gh-pages</code> that contains the static site.</p>
+
+<p>Whichever type you use, pushing back to GitHub will publish the static site.</p>
+
+<p>I’ll run down the process I use for hosting and upkeeping <code>rask.github.io</code>.</p>
+
+<h2 id="creating-a-user-page-repository">Creating a user page repository</h2>
+
+<p>First up we need the repository that hosts our pages site. Create a new repository at GitHub and name it exactly as following</p>
+
+<div class="highlight"><pre><code>&lt;your-github-username&gt;.github.io
+</code></pre></div>
+
+<p>No room for error there! After it is created the repository will behave like any other GitHub git repository. If you now add an <code>index.html</code> file, it will be served as is from the repository when accessing <code>&lt;your-github-username&gt;.github.io</code>.</p>
+
+<h2 id="a-development-system">A development system</h2>
+
+<p>I use Jekyll to update this site. It is quite simple once you get it installed and configured properly. Additionally I use Gulp for asset handling and minification. Note: I use local Jekyll, not GitHub’s “push-to-build” Jekyll.</p>
+
+<h3 id="jekyll-and-project-structure">Jekyll and project structure</h3>
+
+<p>Get Jekyll using:</p>
+
+<div class="highlight"><pre><code>$ gem install jekyll
+</code></pre></div>
+
+<p>After the Jekyll gem is available, create a new directory with the following structure:</p>
+
+<div class="highlight"><pre><code>gh-pages-project/
+├─ development/
+│  ├─ _css/
+│  ├─ _drafts/
+│  ├─ _includes/
+│  ├─ _js/
+│  ├─ _layouts/
+│  ├─ _posts/
+│  ├─ _sass/
+│  └─ index.html
+├─ username.github.io/
+│  ├─ .git/
+│  └─ ...
+├─ _config.yml
+├─ gulpfile.js
+└─ package.json_
+</code></pre></div>
+
+<p>Inside the <code>development</code> directory we have the sources we use to generate the static site contents (HTML, CSS and JS). The directory <code>username.github.io</code> is the GitHub repository which will be served at GitHub Pages.</p>
+
+<p>If you need to version control the full <code>gh-pages-project</code> directory, just add the <code>username.github.io</code> directory to the parent repo’s <code>.gitignore</code>.</p>
+
+<p><code>package.json</code> and <code>gulpfile.js</code> are for Gulp tasks, which move source Sass and JavaScript to the GHPages directory.</p>
+
+<p><code>_config.yml</code> contains the Jekyll configuration. The following configuration works for me on this system:</p>
+
+<div class="highlight"><pre><code class="language-yaml"><span class="c1"># Site settings</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">username.github.io</span>
+<span class="l-Scalar-Plain">baseurl</span><span class="p-Indicator">:</span> <span class="s">&quot;&quot;</span> <span class="c1"># the subpath of your site, e.g. /blog/</span>
+<span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="s">&quot;https://username.github.io&quot;</span> <span class="c1"># the base hostname &amp; protocol for your site</span>
+<span class="l-Scalar-Plain">permalink</span><span class="p-Indicator">:</span> <span class="s">&#39;:categories/:title&#39;</span>
+
+<span class="c1"># Build settings</span>
+<span class="l-Scalar-Plain">source</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">./development</span>
+<span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">./username.github.io</span>
+<span class="l-Scalar-Plain">keep_files</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="s">&#39;css&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;js&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;img&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;.git&#39;</span><span class="p-Indicator">,</span> <span class="s">&#39;.gitignore&#39;</span><span class="p-Indicator">]</span>
+<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">kramdown</span>
+<span class="l-Scalar-Plain">kramdown</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">input</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">GFM</span>
+<span class="l-Scalar-Plain">encoding</span><span class="p-Indicator">:</span> <span class="s">&quot;utf-8&quot;</span>
+<span class="l-Scalar-Plain">markdown_ext</span><span class="p-Indicator">:</span> <span class="s">&quot;markdown,mkdown,mkdn,mkd,md&quot;</span></code></pre></div>
+
+<p>When you run either <code>jekyll build</code> or <code>jekyll serve</code> inside the <code>gh-pages-project</code> directory, Jekyll will read the <code>development</code> directory contents and parse them as static site assets into the <code>username.github.io</code> directory.</p>
+
+<p>The <code>keep_files</code> value ensures that our Gulp-built assets stick in place, and that our Git repo information (which is used to publish the site to GitHub Pages) also is preserved between Jekyll builds.</p>
+
+<p>Inside the <code>development</code> directory we have some directories and a couple of files.</p>
+
+<p><code>_includes</code> and <code>_layouts</code> are Jekyll’s template directories. Layouts contain template files which can be used to display varying types of content. Includes contain raw HTML templates which can be included inside layouts.</p>
+
+<p><code>_css</code>, <code>_scss</code> and <code>_js</code> contain Sass and JavaScript assets that are to be used with the static site. Jekyll ignores directories starting with <code>_</code> when building, so these directories are not “built” by Jekyll into the destination folder.</p>
+
+<p><code>_posts</code> and <code>_drafts</code> contain each and every single post you want to display on your site. Posts are not mandatory, but damn useful for articles and such. <code>_drafts</code> contain posts that are not published yet, unless you use <code>jekyll build --drafts</code>.</p>
+
+<p><code>index.html</code> is the home page of your static site.</p>
+
+<p>If we now run</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span>jekyll serve</code></pre></div>
+
+<p>Jekyll will start a simple webserver on <code>localhost:4000</code> and will live compile the site source contents to the <code>username.github.io</code> directory. Our configuration makes sure that Jekyll doesn’t tamper with the Git repository living in that directory.</p>
+
+<h3 id="asset-compilation-with-gulp">Asset compilation with Gulp</h3>
+
+<p>The project has a <code>package.json</code> for saving NPM packages and a <code>gulpfile.js</code> for defining Gulp tasks. Gulp tasks can be something as simple as copy-pasting files from directory to another, or perhaps a humongous system that deploys an enterprise application. We’ll stick with compiling and minifying JavaScript, Sass and CSS, then outputting those to the <code>username.github.io</code> directory for publishing.</p>
+
+<p>Here’s my package JSON which contains packages for the tasks we need:</p>
+
+<div class="highlight"><pre><code class="language-json"><span class="p">{</span>
+  <span class="nt">&quot;dependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;^3.9.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gulp-minify-css&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.2.1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gulp-sass&quot;</span><span class="p">:</span> <span class="s2">&quot;^2.0.4&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gulp-strip-debug&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.0.2&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gulp-uglify&quot;</span><span class="p">:</span> <span class="s2">&quot;^1.3.0&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Because <code>package.json</code> doesn’t have either a name proerpty or any version info, running <code>npm install</code> will give some warnings about that. Don’t be alarmed.</p>
+
+<p>Run <code>npm install</code> if you didn’t yet. The command will download and install the packages to a directory <code>node_modules</code>. Feel free to add that directory to a <code>.gitignore</code> file to keep your repo clean from “binaries”.</p>
+
+<p>Next up we need to define Gulp tasks:</p>
+
+<ul>
+  <li>Compile Sass to CSS,</li>
+  <li>Minify CSS and copy it over to another directory,</li>
+  <li>And minify JavaScript and copy it over to another directory.</li>
+</ul>
+
+<p>Open up the <code>gulpfile.js</code> file and paste in the following:</p>
+
+<div class="highlight"><pre><code class="language-javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">sass</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">minCss</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-css&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">stripDebug</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-strip-debug&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">uglify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">);</span>
+
+<span class="c1">// Compile Sass to CSS</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;./dev/_sass/**/*.scss&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;./dev/_css&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="c1">// Minify CSS and output to publish destination</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;./dev/_css/**/*.css&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minCss</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;./username.github.io/css&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="c1">// Minify JavaScript and output to publish destination</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;js&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;./dev/_js/**/*.js&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">stripDebug</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;./username.github.io/js&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="c1">// Watch for changes and build on the fly</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="s1">&#39;js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;./dev/_sass/**/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]);</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;./dev/_css/**/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;css&#39;</span><span class="p">]);</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;./dev/_js/**/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;js&#39;</span><span class="p">]);</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Watching, Ctrl-C to stop...&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Default to watching</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>The above Gulp configuration gives us five raw tasks: <code>sass</code>, <code>css</code>, <code>js</code>, <code>watch</code> and <code>default</code>. The default task is invoked in case the Gulp command is given no specific task to run. The watcher runs other tasks if the respective files change. Sass, CSS and JavaScript tasks take in a file and output it elsewhere after manipulating it.</p>
+
+<p>Assuming we have a file called <code>development/_sass/main.scss</code> and we run</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span>gulp</code></pre></div>
+
+<p>Gulp will first compile the file to <code>development/_css</code> as <code>main.css</code>, then it will take the <code>main.css</code>, minify it and copy it over to <code>username.github.io/css/main.css</code>.</p>
+
+<p>Then as per our <code>gulpfile.js</code> <code>default</code> task, Gulp will initiate <code>watch</code> which will do the above procedure every time the <code>main.scss</code> file changes.</p>
+
+<h2 id="deploying-the-site-to-github-pages">Deploying the site to GitHub Pages</h2>
+
+<p>Now that we’ve got some content and assets inside the <code>username.github.io</code> directory and it has <code>git@github.com:username/username.github.io.git</code> as the <code>origin</code> remote, just by pushing the master to origin we will publish the site.</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span>git push origin master</code></pre></div>
+
+<p>Now if you open your browser and visit <code>https://username.github.io</code>, you should see your site!</p>
+
+<h2 id="developing-on-multiple-machines">Developing on multiple machines</h2>
+
+<p>If you need to be able to update your site from two or more computers, or perhaps let other contributors create content, you should have the <code>gh-pages-project</code> directory versioned using Git or similar too.</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span><span class="nb">cd </span>gh-pages-project
+<span class="nv">$ </span>git init .
+<span class="nv">$ </span>touch .gitignore
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;username.github.io/&quot;</span> &gt; .gitgnore
+<span class="nv">$ </span>git remote add origin &lt;some repo url&gt;</code></pre></div>
+
+<p>Remember to <code>.gitignore</code> the static site directory so we can have a git repo inside a git repo.</p>
+
+<p>Now you can first clone the <code>gh-pages-project</code> repo to your machine, then clone the static site sources from <code>git@github.com:username/username.github.io.git</code> using</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span><span class="nb">cd </span>gh-pages-project
+<span class="nv">$ </span>git clone git@github.com:username/username.github.io.git username.github.io</code></pre></div>
+
+<p>Then run <code>npm install</code>, <code>jekyll build</code> and <code>gulp</code> where needed. After you’re done, open the static site repo directory and publish your changes:</p>
+
+<div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span><span class="nb">cd </span>username.github.io
+<span class="nv">$ </span>git push origin master</code></pre></div>
+
+<h2 id="jekyll-auto-build-on-push">Jekyll auto-build on push</h2>
+
+<p>Yes, GitHub Pages supports Jekyll auto-building when pushing a Jekyll project to the repository. This means you could have only the <code>development</code> folder setup and push that to GitHub instead, and then the resulting Jekyll build would be served at <code>https://username.github.io</code>.</p>
+
+<p>I decided not to use this feature because</p>
+
+<ol>
+  <li>I prefer to keep the sources to myself in a private repository elsewhere</li>
+  <li>And I don’t know how to integrate Gulp with Jekyll that well.</li>
+</ol>
+
+<p>My way keeps the public part as the public part and private parts—damn, I swear I just heard someone laugh—private. More complicated, I know, but works for me.</p>
+
+<h2 id="other-options">Other options</h2>
+
+<p>Hosting static sites is the easiest thing ever. Well not the easiest, but pretty easy.</p>
+
+<p>You could host the static site where ever you could host a WordPress site or a Laravel site for instance. One option could be Amazon S3, which would cost you virtually nothing for a super-performant website. Someone had calculated that their medium sized blog on AWS S3 cost him under 10 cents a month.</p>
+
+<p>Anything that can take a folder and serve it over HTTP(S) is a good home for static sites.</p>
+
+<p>If you use GitHub, then GitHub Pages makes this a bit easier with the easy push-to-deploy possibility and a quite good free domain name.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:ghpt">
+      <p>GitHub Pages types: <a href="https://help.github.com/articles/user-organization-and-project-pages/">https://help.github.com/articles/user-organization-and-project-pages/</a> <a href="#fnref:ghpt" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+            </article>
+
+            <section id="comments">
+                <h2>Comments</h2>
+
+                <div id="disqus_thread"></div>
+
+                <script type="text/javascript">
+
+                    if (window.location.href.indexOf('localhost') !== -1) {
+                        var disqus_developer = 1; // this would set it to developer mode
+                    }
+
+                    var disqus_shortname = 'raskgithubio';
+                    var disqus_url = "https://rask.github.io/posts/up-and-running-with-github-pages";
+
+                    (function() {
+                        // Thread.
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+                        // Comment count.
+                        var s = document.createElement('script');
+                        s.async = true;
+                        s.type = 'text/javascript';
+                        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('head')[0]).appendChild(s);
+                    })();
+
+                </script>
+
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+            </section> <!-- /#comments -->
+
+        </div>
+    </main> <!-- /#main -->
+
+    <footer id="footer" class="container">
+        <div class="inbox">
+
+            <p>&copy; Otto Rask &mdash; <a href="#header">Back to top</a></p>
+
+        </div>
+    </footer> <!-- /#footer -->
+
+    </body>
+
+</html>
+

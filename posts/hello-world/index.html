@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Hello World</title>
-    <meta name="description" content="First post! This blog/site is a technically oriented dump of sorts for me.">
+    <meta name="description" content="First post! And with cheesiest development related title ever! This blog/site is a technically oriented dump of sorts for me. Check back for random content e...">
 
     <link rel="stylesheet" href="/css/main.css">
     <link rel="canonical" href="https://rask.github.io/posts/hello-world">
@@ -16,47 +16,86 @@
 </head>
 
 
-<body>
+<body class="single hello-world">
 
     
 
     <header id="header" class="container">
+        <div class="inbox">
 
-        <p class="logo"><a href="/"><img src="/img/logo.png" width="40" height="40" alt="rask.github.io"></a></p>
+            <p class="logo"><a href="/"><img src="/img/logo.png" width="40" height="40" alt="rask.github.io"> rask.github.io</a></p>
 
-        <nav id="navigation">
+            <nav id="navigation">
 
-            <ul>
-                <li class="home"><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-            </ul>
+                <ul>
+                    <li class="home"><a href="/">Home</a></li>
+                    <li class="about"><a href="/about">About</a></li>
+                </ul>
 
-        </nav> <!-- /#navigation -->
+            </nav> <!-- /#navigation -->
 
+        </div>
     </header> <!-- /#header -->
 
 
-    <div class="post">
+    <main id="main" class="container">
+        <div class="inbox">
 
-  <header class="post-header">
-    <h1 class="post-title">Hello World</h1>
-    <p class="post-meta">Aug 27, 2015</p>
-  </header>
+            <h1>Hello World</h1>
 
-  <article class="post-content">
-    <p>First post! This blog/site is a technically oriented dump of sorts for me.</p>
+            <p class="meta">
+                Posted on 27 August, 2015 &mdash; <a href="#disqus_thread">Comments</a>
+            </p>
 
-<p>Check back for random content every now and then.</p>
+            <article class="single">
+                <p>First post! And with cheesiest development related title ever! This blog/site is a technically oriented dump of sorts for me. Check back for random content every now and then.</p>
 
-  </article>
+            </article>
 
-</div>
+            <section id="comments">
+                <h2>Comments</h2>
 
+                <div id="disqus_thread"></div>
+
+                <script type="text/javascript">
+
+                    if (window.location.href.indexOf('localhost') !== -1) {
+                        var disqus_developer = 1; // this would set it to developer mode
+                    }
+
+                    var disqus_shortname = 'raskgithubio';
+                    var disqus_url = "https://rask.github.io/posts/hello-world";
+
+                    (function() {
+                        // Thread.
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+                        // Comment count.
+                        var s = document.createElement('script');
+                        s.async = true;
+                        s.type = 'text/javascript';
+                        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('head')[0]).appendChild(s);
+                    })();
+
+                </script>
+
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+            </section> <!-- /#comments -->
+
+        </div>
+    </main> <!-- /#main -->
 
     <footer id="footer" class="container">
+        <div class="inbox">
 
-        <p>&copy; Otto Rask &mdash; <a href="#header">Back to top</a></p>
+            <p>&copy; Otto Rask &mdash; <a href="#header">Back to top</a></p>
 
+        </div>
     </footer> <!-- /#footer -->
 
     </body>
