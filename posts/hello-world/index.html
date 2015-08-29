@@ -14,16 +14,16 @@
     <link rel="canonical" href="https://rask.github.io/posts/hello-world">
     <link rel="alternate" type="application/rss+xml" title="rask.github.io" href="https://rask.github.io/feed.xml" />
 
-    <script>
+    <script type="text/javascript">
         var host = "rask.github.io";
 
-        if ((host == window.location.host) && (window.location.protocol != "https:")) {
-            window.location.protocol = "https:";
+        if (window.location.host === host && window.location.protocol !== "https:") {
+            window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
         }
     </script>
 
     <!-- Hotjar Tracking Code for rask.github.io -->
-    <script>
+    <script type="text/javascript">
         if (window.location.href.indexOf('localhost') === -1) {
             (function(h,o,t,j,a,r){
                 h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
