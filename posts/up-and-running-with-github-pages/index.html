@@ -14,6 +14,14 @@
     <link rel="canonical" href="https://rask.github.io/posts/up-and-running-with-github-pages">
     <link rel="alternate" type="application/rss+xml" title="rask.github.io" href="https://rask.github.io/feed.xml" />
 
+    <script>
+        var host = "rask.github.io";
+
+        if ((host == window.location.host) && (window.location.protocol != "https:")) {
+            window.location.protocol = "https:";
+        }
+    </script>
+
     <!-- Hotjar Tracking Code for rask.github.io -->
     <script>
         if (window.location.href.indexOf('localhost') === -1) {
