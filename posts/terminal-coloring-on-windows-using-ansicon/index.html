@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Terminal coloring on Windows using Ansicon &mdash; rask.github.io</title>
+    <meta name="description" content="The Windows command-line interface is quite a bummer when compared to the terminals on Linux and Mac. One of those bummer-factors is the absence of proper co...">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="https://rask.github.io/posts/terminal-coloring-on-windows-using-ansicon">
+    <link rel="alternate" type="application/rss+xml" title="rask.github.io" href="https://rask.github.io/feed.xml" />
+
+    <!-- Hotjar Tracking Code for rask.github.io -->
+    <script>
+        if (window.location.href.indexOf('localhost') === -1) {
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:68873,hjsv:5};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+        }
+    </script>
+
+</head>
+
+
+<body class="single terminal-coloring-on-windows-using-ansicon">
+
+    
+
+    <header id="header" class="container">
+        <div class="inbox">
+
+            <p class="logo"><a href="/"><img src="/img/logo.png" width="40" height="40" alt="rask.github.io"> rask.github.io</a></p>
+
+            <nav id="navigation">
+
+                <ul>
+                    <li class="home"><a href="/">Home</a></li>
+                    <li class="about"><a href="/about">About</a></li>
+                </ul>
+
+            </nav> <!-- /#navigation -->
+
+        </div>
+    </header> <!-- /#header -->
+
+
+    <main id="main" class="container">
+        <div class="inbox">
+
+            <h1>Terminal coloring on Windows using Ansicon</h1>
+
+            <p class="meta">
+                Posted on 29 August, 2015 &mdash; <a href="#disqus_thread">Comments</a>
+            </p>
+
+            <article class="single">
+                <p>The Windows command-line interface is quite a bummer when compared to the terminals on Linux and Mac. One of those bummer-factors is the absence of proper color handling.</p>
+
+<!--more-->
+
+<p>In the olden DOS days a little helper called <code>ANSI.SYS</code> would aid in outputting colors in the DOS command-line. It can be still used, but some people have noticed it makes the modern Windows CLI buggy and broken in places.</p>
+
+<h2 id="ansicon-to-the-resque">Ansicon to the resque</h2>
+
+<p>Ansicon<sup id="fnref:ghansicon"><a href="#fn:ghansicon" class="footnote">1</a></sup> is a customized wrapper for Windows command-line, which allows parsing ANSI codes which create coloring and character effects in the terminal.</p>
+
+<p>It has a standalone operation mode (<code>ansicon.exe -p ...</code>) and a bootstrap mode (<code>ansicon.exe -i</code>).</p>
+
+<p>The standalone mode allows you to use Ansicon where needed, by wrapping the <code>cmd.exe</code> with it for instance. The bootstrap mode installs Ansicon to the system itself, making it auto-wrap the command-lines.</p>
+
+<h2 id="use-case-behat-with-gitbash">Use-case: Behat with GitBash</h2>
+
+<p>Behat<sup id="fnref:behat"><a href="#fn:behat" class="footnote">2</a></sup> is a PHP test framework aimed towards behavior driven development. You write <em>features</em> which contain <em>scenarios</em> to which you code must adhere to.</p>
+
+<p>I use GitBash, and I wanted to see Behat output colors as it does in UNIX platforms. As the Windows CLI (hence GitBash too) doesn’t support ANSI coloring out of the box, it should be enabled manually using Ansicon for instance.</p>
+
+<h3 id="get-ansicon">Get Ansicon</h3>
+
+<p>Ansicon’s source is available at GitHub, and there is also a link to a prebuilt binary<sup id="fnref:ansiconbin"><a href="#fn:ansiconbin" class="footnote">3</a></sup> (version <em>1.66</em> at the time of writing). I used the prebuilt binary, but some people might want to build Ansicon from source.</p>
+
+<p>Download the binary package and unpack it somewhere convenient like <code>C:/ansicon</code>.</p>
+
+<h4 id="bootstrapped-installation-mode">Bootstrapped installation mode</h4>
+
+<p>To install Ansicon globally, open the Windows command prompt (<code>cmd.exe</code>) as an Administrator, and open the directory you unpacked the binary package to. Then open either the <code>x86</code> if you’re on a 32-bit Windows, or <code>x64</code> if you’re on a 64-bit Windows. Then execute the <code>ansicon.exe</code> binary with the <code>-i</code> option.</p>
+
+<div class="highlight"><pre><code>&gt; chdir /path/to/unpack/dir
+&gt; chdir x64
+&gt; ansicon.exe -i
+</code></pre></div>
+
+<p>For me the CLI didn’t output anything after the job was done. Now you might need to restart your computer for the changes to have any effect.</p>
+
+<p>Downsides here are that if you ever need to run a CLI without Ansicon, it might be a bit difficult.</p>
+
+<h5 id="uninstallation">Uninstallation</h5>
+
+<p>Just browse to the same location and use the <code>-u</code> option.</p>
+
+<div class="highlight"><pre><code>&gt; ansicon.exe -u
+</code></pre></div>
+
+<h4 id="standalone-mode">Standalone mode</h4>
+
+<p>I haven’t used this mode myself, but from what I’ve gathered you can start an Ansicon-enabled CLI session using the following command structure in an application shortcut for instance:</p>
+
+<div class="highlight"><pre><code>C:/path/to/ansicon.exe -p "C:/path/to/git/bin/sh.exe --login -i"
+</code></pre></div>
+
+<p>The above command will pass all GitBash through Ansicon, allowing for ANSI coloring.</p>
+
+<h3 id="environment-setup">Environment setup</h3>
+
+<p>Somewhere I read that in order for a bootstrapped Ansicon installation to pickup GitBash properly, you’ll need to create a user level environment value called <code>TERM</code> with the value <code>msys</code>. I did this straight away before installing Ansicon, but I’m not sure that it is always needed. Didn’t change anything else though.</p>
+
+<p>To adjust environment values in Windows 7, open the Windows Control Panel, open <em>System and security</em> → <em>System</em>. There should be a link or a button to open <em>Advanced system settings</em>. After that dialog opens, find button labeled <em>Environment Variables…</em> and click it.</p>
+
+<p>In the variables window, there are two listings: <em>User variables for username</em> and <em>System variables</em>. If you want to set something for just yourself, use the upper pane. If you need something to be set globally, use the lower pane.</p>
+
+<p>I used the upper pane and hit <em>New…</em>. As the <em>Variable name</em> set <code>TERM</code> and the <em>Variable value</em> set <code>msys</code>.</p>
+
+<h3 id="test-it-out">Test it out</h3>
+
+<p>Open GitBash and run <code>$ behat</code>. If the coloring works, you should now see steps, successes and failures in color.</p>
+
+<p>I tried running <code>$ behat --colors</code>, but that broke with Ansicon too.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:ghansicon">
+      <p><a href="https://github.com/adoxa/ansicon">https://github.com/adoxa/ansicon</a> <a href="#fnref:ghansicon" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:behat">
+      <p><a href="https://github.com/Behat/Behat">https://github.com/Behat/Behat</a> <a href="#fnref:behat" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:ansiconbin">
+      <p><a href="http://ansicon.adoxa.vze.com/">http://ansicon.adoxa.vze.com/</a> <a href="#fnref:ansiconbin" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+            </article>
+
+            <section id="comments">
+                <h2>Comments</h2>
+
+                <div id="disqus_thread"></div>
+
+                <script type="text/javascript">
+
+                    if (window.location.href.indexOf('localhost') !== -1) {
+                        var disqus_developer = 1; // this would set it to developer mode
+                    }
+
+                    var disqus_shortname = 'raskgithubio';
+                    var disqus_url = "https://rask.github.io/posts/terminal-coloring-on-windows-using-ansicon";
+
+                    (function() {
+                        // Thread.
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+
+                        // Comment count.
+                        var s = document.createElement('script');
+                        s.async = true;
+                        s.type = 'text/javascript';
+                        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('head')[0]).appendChild(s);
+                    })();
+
+                </script>
+
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+            </section> <!-- /#comments -->
+
+        </div>
+    </main> <!-- /#main -->
+
+    <footer id="footer" class="container">
+        <div class="inbox">
+
+            <p>&copy; Otto Rask &mdash; <a href="#header">Back to top</a></p>
+
+        </div>
+    </footer> <!-- /#footer -->
+
+    <script type="text/javascript" src="/js/lib/picturefill.min.js"></script>
+
+    <script>
+        if (window.location.href.indexOf('localhost') === -1) {
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-66871579-1', 'auto');
+            ga('send', 'pageview');
+        }
+    </script>
+
+    </body>
+
+</html>
+

@@ -5,9 +5,111 @@
     <description>Otto Rask&#39;s development oriented site</description>
     <link>https://rask.github.io/</link>
     <atom:link href="https://rask.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Aug 2015 11:58:16 +0300</pubDate>
-    <lastBuildDate>Fri, 28 Aug 2015 11:58:16 +0300</lastBuildDate>
+    <pubDate>Sat, 29 Aug 2015 23:13:08 +0300</pubDate>
+    <lastBuildDate>Sat, 29 Aug 2015 23:13:08 +0300</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Terminal coloring on Windows using Ansicon</title>
+        <description>&lt;p&gt;The Windows command-line interface is quite a bummer when compared to the terminals on Linux and Mac. One of those bummer-factors is the absence of proper color handling.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;In the olden DOS days a little helper called &lt;code&gt;ANSI.SYS&lt;/code&gt; would aid in outputting colors in the DOS command-line. It can be still used, but some people have noticed it makes the modern Windows CLI buggy and broken in places.&lt;/p&gt;
+
+&lt;h2 id=&quot;ansicon-to-the-resque&quot;&gt;Ansicon to the resque&lt;/h2&gt;
+
+&lt;p&gt;Ansicon&lt;sup id=&quot;fnref:ghansicon&quot;&gt;&lt;a href=&quot;#fn:ghansicon&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is a customized wrapper for Windows command-line, which allows parsing ANSI codes which create coloring and character effects in the terminal.&lt;/p&gt;
+
+&lt;p&gt;It has a standalone operation mode (&lt;code&gt;ansicon.exe -p ...&lt;/code&gt;) and a bootstrap mode (&lt;code&gt;ansicon.exe -i&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;The standalone mode allows you to use Ansicon where needed, by wrapping the &lt;code&gt;cmd.exe&lt;/code&gt; with it for instance. The bootstrap mode installs Ansicon to the system itself, making it auto-wrap the command-lines.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-case-behat-with-gitbash&quot;&gt;Use-case: Behat with GitBash&lt;/h2&gt;
+
+&lt;p&gt;Behat&lt;sup id=&quot;fnref:behat&quot;&gt;&lt;a href=&quot;#fn:behat&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; is a PHP test framework aimed towards behavior driven development. You write &lt;em&gt;features&lt;/em&gt; which contain &lt;em&gt;scenarios&lt;/em&gt; to which you code must adhere to.&lt;/p&gt;
+
+&lt;p&gt;I use GitBash, and I wanted to see Behat output colors as it does in UNIX platforms. As the Windows CLI (hence GitBash too) doesn’t support ANSI coloring out of the box, it should be enabled manually using Ansicon for instance.&lt;/p&gt;
+
+&lt;h3 id=&quot;get-ansicon&quot;&gt;Get Ansicon&lt;/h3&gt;
+
+&lt;p&gt;Ansicon’s source is available at GitHub, and there is also a link to a prebuilt binary&lt;sup id=&quot;fnref:ansiconbin&quot;&gt;&lt;a href=&quot;#fn:ansiconbin&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; (version &lt;em&gt;1.66&lt;/em&gt; at the time of writing). I used the prebuilt binary, but some people might want to build Ansicon from source.&lt;/p&gt;
+
+&lt;p&gt;Download the binary package and unpack it somewhere convenient like &lt;code&gt;C:/ansicon&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;bootstrapped-installation-mode&quot;&gt;Bootstrapped installation mode&lt;/h4&gt;
+
+&lt;p&gt;To install Ansicon globally, open the Windows command prompt (&lt;code&gt;cmd.exe&lt;/code&gt;) as an Administrator, and open the directory you unpacked the binary package to. Then open either the &lt;code&gt;x86&lt;/code&gt; if you’re on a 32-bit Windows, or &lt;code&gt;x64&lt;/code&gt; if you’re on a 64-bit Windows. Then execute the &lt;code&gt;ansicon.exe&lt;/code&gt; binary with the &lt;code&gt;-i&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code&gt;&amp;gt; chdir /path/to/unpack/dir
+&amp;gt; chdir x64
+&amp;gt; ansicon.exe -i
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For me the CLI didn’t output anything after the job was done. Now you might need to restart your computer for the changes to have any effect.&lt;/p&gt;
+
+&lt;p&gt;Downsides here are that if you ever need to run a CLI without Ansicon, it might be a bit difficult.&lt;/p&gt;
+
+&lt;h5 id=&quot;uninstallation&quot;&gt;Uninstallation&lt;/h5&gt;
+
+&lt;p&gt;Just browse to the same location and use the &lt;code&gt;-u&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code&gt;&amp;gt; ansicon.exe -u
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;standalone-mode&quot;&gt;Standalone mode&lt;/h4&gt;
+
+&lt;p&gt;I haven’t used this mode myself, but from what I’ve gathered you can start an Ansicon-enabled CLI session using the following command structure in an application shortcut for instance:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code&gt;C:/path/to/ansicon.exe -p &quot;C:/path/to/git/bin/sh.exe --login -i&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The above command will pass all GitBash through Ansicon, allowing for ANSI coloring.&lt;/p&gt;
+
+&lt;h3 id=&quot;environment-setup&quot;&gt;Environment setup&lt;/h3&gt;
+
+&lt;p&gt;Somewhere I read that in order for a bootstrapped Ansicon installation to pickup GitBash properly, you’ll need to create a user level environment value called &lt;code&gt;TERM&lt;/code&gt; with the value &lt;code&gt;msys&lt;/code&gt;. I did this straight away before installing Ansicon, but I’m not sure that it is always needed. Didn’t change anything else though.&lt;/p&gt;
+
+&lt;p&gt;To adjust environment values in Windows 7, open the Windows Control Panel, open &lt;em&gt;System and security&lt;/em&gt; → &lt;em&gt;System&lt;/em&gt;. There should be a link or a button to open &lt;em&gt;Advanced system settings&lt;/em&gt;. After that dialog opens, find button labeled &lt;em&gt;Environment Variables…&lt;/em&gt; and click it.&lt;/p&gt;
+
+&lt;p&gt;In the variables window, there are two listings: &lt;em&gt;User variables for username&lt;/em&gt; and &lt;em&gt;System variables&lt;/em&gt;. If you want to set something for just yourself, use the upper pane. If you need something to be set globally, use the lower pane.&lt;/p&gt;
+
+&lt;p&gt;I used the upper pane and hit &lt;em&gt;New…&lt;/em&gt;. As the &lt;em&gt;Variable name&lt;/em&gt; set &lt;code&gt;TERM&lt;/code&gt; and the &lt;em&gt;Variable value&lt;/em&gt; set &lt;code&gt;msys&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-it-out&quot;&gt;Test it out&lt;/h3&gt;
+
+&lt;p&gt;Open GitBash and run &lt;code&gt;$ behat&lt;/code&gt;. If the coloring works, you should now see steps, successes and failures in color.&lt;/p&gt;
+
+&lt;p&gt;I tried running &lt;code&gt;$ behat --colors&lt;/code&gt;, but that broke with Ansicon too.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:ghansicon&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://github.com/adoxa/ansicon&quot;&gt;https://github.com/adoxa/ansicon&lt;/a&gt; &lt;a href=&quot;#fnref:ghansicon&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:behat&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://github.com/Behat/Behat&quot;&gt;https://github.com/Behat/Behat&lt;/a&gt; &lt;a href=&quot;#fnref:behat&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:ansiconbin&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://ansicon.adoxa.vze.com/&quot;&gt;http://ansicon.adoxa.vze.com/&lt;/a&gt; &lt;a href=&quot;#fnref:ansiconbin&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 29 Aug 2015 22:00:00 +0300</pubDate>
+        <link>https://rask.github.io/posts/terminal-coloring-on-windows-using-ansicon</link>
+        <guid isPermaLink="true">https://rask.github.io/posts/terminal-coloring-on-windows-using-ansicon</guid>
+        
+        <category>terminal</category>
+        
+        <category>windows</category>
+        
+        <category>behat</category>
+        
+        
+        <category>posts</category>
+        
+      </item>
     
       <item>
         <title>Up and running with GitHub Pages</title>
@@ -131,7 +233,7 @@
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Because &lt;code&gt;package.json&lt;/code&gt; doesn’t have either a name proerpty or any version info, running &lt;code&gt;npm install&lt;/code&gt; will give some warnings about that. Don’t be alarmed.&lt;/p&gt;
+&lt;p&gt;Because &lt;code&gt;package.json&lt;/code&gt; doesn’t have either a name property or any version info, running &lt;code&gt;npm install&lt;/code&gt; will give some warnings about that. Don’t be alarmed.&lt;/p&gt;
 
 &lt;p&gt;Run &lt;code&gt;npm install&lt;/code&gt; if you didn’t yet. The command will download and install the packages to a directory &lt;code&gt;node_modules&lt;/code&gt;. Feel free to add that directory to a &lt;code&gt;.gitignore&lt;/code&gt; file to keep your repo clean from “binaries”.&lt;/p&gt;
 
@@ -264,13 +366,11 @@
         <link>https://rask.github.io/posts/up-and-running-with-github-pages</link>
         <guid isPermaLink="true">https://rask.github.io/posts/up-and-running-with-github-pages</guid>
         
-        <category>github,</category>
+        <category>github</category>
         
-        <category>jekyll,</category>
+        <category>jekyll</category>
         
-        <category>web</category>
-        
-        <category>development,</category>
+        <category>web development</category>
         
         <category>gulp</category>
         
