@@ -94,11 +94,13 @@
 
 <!--more-->
 
+<p class="update-note"><em>Update 23rd September</em>: I still am a bit confused as to why it stopped working on its own. For now I’m using a batch (<code>.bat</code>) file to run Ansicon enabled GitBash terminals. A single line to a <code>.bat</code>: <code>C:\Ansicon\x64\ansicon.exe C:\Git\bin\sh.exe --login -i</code> and running that will enable Ansicon.</p>
+
 <p class="update-note"><em>Update 1st September</em>: Oh no! The Ansicon installation procedure I’ve described in this post seems to have been borked on my system. I lost the coloring data on my GitBash for some reason. Nevertheless, try it out and let me know what could possibly make the CLI lose the coloring even with Ansicon. I’ll continue the investigation…</p>
 
 <p>In the olden DOS days a little helper called <code>ANSI.SYS</code> would aid in outputting colors in the DOS command-line. It can be still used, but some people have noticed it makes the modern Windows CLI buggy and broken in places.</p>
 
-<h2 id="ansicon-to-the-resque">Ansicon to the resque</h2>
+<h2 id="ansicon-to-the-rescue">Ansicon to the rescue</h2>
 
 <p>Ansicon<sup id="fnref:ghansicon"><a href="#fn:ghansicon" class="footnote">1</a></sup> is a customized wrapper for Windows command-line, which allows parsing ANSI codes which create coloring and character effects in the terminal.</p>
 

@@ -280,7 +280,7 @@
 
 <h2 id="deploying-the-site-to-github-pages">Deploying the site to GitHub Pages</h2>
 
-<p>Now that we’ve got some content and assets inside the <code>username.github.io</code> directory and it has <code>git@github.com:username/username.github.io.git</code> as the <code>origin</code> remote, just by pushing the master to origin we will publish the site.</p>
+<p>Now that we’ve got some content and assets inside the <code>username.github.io</code> directory and it has <code>git@github.com:username/ username.github.io.git</code> as the <code>origin</code> remote, just by pushing the master to origin we will publish the site.</p>
 
 <div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span>git push origin master</code></pre></div>
 
@@ -298,7 +298,7 @@
 
 <p>Remember to <code>.gitignore</code> the static site directory so we can have a git repo inside a git repo.</p>
 
-<p>Now you can first clone the <code>gh-pages-project</code> repo to your machine, then clone the static site sources from <code>git@github.com:username/username.github.io.git</code> using</p>
+<p>Now you can first clone the <code>gh-pages-project</code> repo to your machine, then clone the static site sources from <code>git@github.com:username/ username.github.io.git</code> using</p>
 
 <div class="highlight"><pre><code class="language-sh"><span class="nv">$ </span><span class="nb">cd </span>gh-pages-project
 <span class="nv">$ </span>git clone git@github.com:username/username.github.io.git username.github.io</code></pre></div>

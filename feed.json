@@ -3,8 +3,8 @@
         "title": "rask.github.io",
         "description": "Otto Rask's development oriented site",
         "link": "https://rask.github.io",
-        "pubDate": "Thu, 03 Sep 2015 00:08:21 +0300",
-        "lastBuildDate": "Thu, 03 Sep 2015 00:08:21 +0300",
+        "pubDate": "Wed, 23 Sep 2015 10:07:00 +0300",
+        "lastBuildDate": "Wed, 23 Sep 2015 10:07:00 +0300",
         "generator": "Jekyll v2.5.3",
 
         "items": [
@@ -122,11 +122,13 @@ child thing 3
 
 &lt;!--more--&gt;
 
+&lt;p class=&quot;update-note&quot;&gt;&lt;em&gt;Update 23rd September&lt;/em&gt;: I still am a bit confused as to why it stopped working on its own. For now I’m using a batch (&lt;code&gt;.bat&lt;/code&gt;) file to run Ansicon enabled GitBash terminals. A single line to a &lt;code&gt;.bat&lt;/code&gt;: &lt;code&gt;C:\Ansicon\x64\ansicon.exe C:\Git\bin\sh.exe --login -i&lt;/code&gt; and running that will enable Ansicon.&lt;/p&gt;
+
 &lt;p class=&quot;update-note&quot;&gt;&lt;em&gt;Update 1st September&lt;/em&gt;: Oh no! The Ansicon installation procedure I’ve described in this post seems to have been borked on my system. I lost the coloring data on my GitBash for some reason. Nevertheless, try it out and let me know what could possibly make the CLI lose the coloring even with Ansicon. I’ll continue the investigation…&lt;/p&gt;
 
 &lt;p&gt;In the olden DOS days a little helper called &lt;code&gt;ANSI.SYS&lt;/code&gt; would aid in outputting colors in the DOS command-line. It can be still used, but some people have noticed it makes the modern Windows CLI buggy and broken in places.&lt;/p&gt;
 
-&lt;h2 id=&quot;ansicon-to-the-resque&quot;&gt;Ansicon to the resque&lt;/h2&gt;
+&lt;h2 id=&quot;ansicon-to-the-rescue&quot;&gt;Ansicon to the rescue&lt;/h2&gt;
 
 &lt;p&gt;Ansicon&lt;sup id=&quot;fnref:ghansicon&quot;&gt;&lt;a href=&quot;#fn:ghansicon&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is a customized wrapper for Windows command-line, which allows parsing ANSI codes which create coloring and character effects in the terminal.&lt;/p&gt;
 
@@ -404,7 +406,7 @@ child thing 3
 
 &lt;h2 id=&quot;deploying-the-site-to-github-pages&quot;&gt;Deploying the site to GitHub Pages&lt;/h2&gt;
 
-&lt;p&gt;Now that we’ve got some content and assets inside the &lt;code&gt;username.github.io&lt;/code&gt; directory and it has &lt;code&gt;git@github.com:username/username.github.io.git&lt;/code&gt; as the &lt;code&gt;origin&lt;/code&gt; remote, just by pushing the master to origin we will publish the site.&lt;/p&gt;
+&lt;p&gt;Now that we’ve got some content and assets inside the &lt;code&gt;username.github.io&lt;/code&gt; directory and it has &lt;code&gt;git@github.com:username/ username.github.io.git&lt;/code&gt; as the &lt;code&gt;origin&lt;/code&gt; remote, just by pushing the master to origin we will publish the site.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git push origin master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -422,7 +424,7 @@ child thing 3
 
 &lt;p&gt;Remember to &lt;code&gt;.gitignore&lt;/code&gt; the static site directory so we can have a git repo inside a git repo.&lt;/p&gt;
 
-&lt;p&gt;Now you can first clone the &lt;code&gt;gh-pages-project&lt;/code&gt; repo to your machine, then clone the static site sources from &lt;code&gt;git@github.com:username/username.github.io.git&lt;/code&gt; using&lt;/p&gt;
+&lt;p&gt;Now you can first clone the &lt;code&gt;gh-pages-project&lt;/code&gt; repo to your machine, then clone the static site sources from &lt;code&gt;git@github.com:username/ username.github.io.git&lt;/code&gt; using&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;gh-pages-project
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone git@github.com:username/username.github.io.git username.github.io&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
